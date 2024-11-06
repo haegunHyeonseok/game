@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="main.js"></script>
+    <style>
+        * {
+            text-align: center;
+            position: relative;
+            top: 50px;
+        }
+
+        .date {
+            font-size: large;
+        }
+
+        .time {
+            font-size: larger;
+            font-weight: bold;
+        }
+
+        .timeBox {
+            text-align: center;
+            width: 300px;
+            height: 50px;
+            font-size: 300%;
+            font: bolder;
+        }
+
+        .res_time {
+            text-align: center;
+            font-size: larger;
+            color: coral;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div>현재시각</div>
+    <div id="time" class="time"></div>
+    <div id="date" class="date"></div>
+    <h1>당신의 퇴근시간을 입력하세요!!! 빨리!!</h1><br>
+    <div>ex) 오후 6시인경우 18:00를 입력하세요</div>
+    <input type="text" id="end_time" class="timeBox"  onkeyup="inputTimeColon(this);" placeholder="시  :  분"
+        maxlength="5" />
+    <br><br>
+    <div id="result_t" class="result_t"></div>
+    <br><br><br>
+    <div id="res_time" class="res_time">
+        <h3>퇴근하고싶으싶니까?</h3>
+    </div>
+
+    <div class="time">
+        <button onclick="handleCalculateTime()">퇴근까지 남은 시간 계산</button>
+        <br><br>
+        <div id="remaining_time" class="remaining_time"></div>
+        <div id="remaining_time2" class="remaining_time"></div>
+    </div>
+
+    <script>
+
+        document.getElementById("end_time").addEventListener("keyup",function(event){
+            if(event.key == "Enter"){
+                handleCalculateTime();
+            }
+        })
+
+        function handleCalculateTime() {
+            var inputTime = document.getElementById("end_time").value;
+            calculateRemainingTime(inputTime);
+            
+        }
+
+        function calculateRemainingTime(inputTime) {
+            var endTime = new Date();
+            var inputArray = inputTime.split(":");
+            endTime.setHours(inputArray[0]);
+            endTime.setMinutes(inputArray[1]);
+            endTime.setSeconds(0); // 0초로 설정
+
+            var timer = setInterval(function () {
+                var now = new Date();
+                var diff = endTime - now;
+                if (diff <= 0) {
+                    clearInterval(timer);
+                    document.getElementById("remaining_time").innerHTML = "이미 목표 시간이 지났습니다.";
+                } else {
+                    var hours = Math.floor(diff / 3600000);
+                    var minutes = Math.floor((diff % 3600000) / 60000);
+                    var seconds = Math.floor((diff % 60000) / 1000); // 남은 초 계산
+                    var milliseconds = diff % 1000;
+
+
+                    var formattedMilliseconds = ("0" + milliseconds).slice(-2);
+
+                    var remainingTimeElement = document.getElementById("remaining_time");
+                    remainingTimeElement.innerHTML = "퇴근까지 남은 시간 " 
+                    var remainingTimeElement2 = document.getElementById("remaining_time2");
+                    remainingTimeElement2.innerHTML = hours + "시간 " + minutes + "분 " + seconds + "."+ formattedMilliseconds +"초";
+                }
+            }, 50);
+        }
+
+    </script>
+</body>
+
+</html>
